@@ -101,6 +101,8 @@ const init = async () => {
       CREATE TABLE employees(
         id SERIAL PRIMARY KEY,
         name VARCHAR(100),
+        created_at TIMESTAMP DEFAULT now(),
+        updated_at TIMESTAMP DEFAULT now(),
         department_id INTEGER REFERENCES departments(id) NOT NULL
       );
 `;
