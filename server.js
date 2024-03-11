@@ -120,9 +120,9 @@ const init = async () => {
         INSERT INTO departments(name) VALUES ('engineering')
         INSERT INTO departments(name) VALUES ('product')
         INSERT INTO departments(name) VALUES ('sales')
-        INSERT INTO (txt, department_id) VALUES ('Vans Engineer 1', (SELECT id FROM departments WHERE name='engineering'));
-        INSERT INTO (txt, department_id) VALUES ('Bob Product 2', (SELECT id FROM departments WHERE name='product'));
-        INSERT INTO (txt, department_id) VALUES ('Thomas sales 3', (SELECT id FROM departments WHERE name='sales'));
+        INSERT INTO (txt, department_id) VALUES ('Vans note 1', (SELECT id FROM departments WHERE name='engineering'));
+        INSERT INTO (txt, department_id) VALUES ('Bob note 2', (SELECT id FROM departments WHERE name='product'));
+        INSERT INTO (txt, department_id) VALUES ('Thomas note 3', (SELECT id FROM departments WHERE name='sales'));
   `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
