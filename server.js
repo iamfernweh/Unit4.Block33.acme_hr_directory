@@ -108,7 +108,6 @@ const init = async () => {
     CREATE TABLE employees(
         id SERIAL PRIMARY KEY,
         name VARCHAR (100),
-        ranking INTEGER NOT NULL DEFAULT 5,
         created_at TIMESTAMP DEFAULT now(),
         updated_at TIMESTAMP DEFAULT now(),
         department_id INTEGER REFERENCES departments(id) NOT NULL
@@ -121,8 +120,8 @@ const init = async () => {
         INSERT INTO departments(name) VALUES ('prod');
         INSERT INTO departments(name) VALUES ('sales');
         INSERT INTO employees(name, department_id) VALUES ('Vans', (SELECT id FROM departments WHERE name='eng'));
-        INSERT INTO employees(name, department_i) VALUES ('Bob', (SELECT id FROM departments WHERE name='prod'));
-        INSERT INTO employees(name, department_i) VALUES ('Thomas', (SELECT id FROM departments WHERE name='sales'));
+        INSERT INTO employees(name, department_id) VALUES ('Bob', (SELECT id FROM departments WHERE name='prod'));
+        INSERT INTO employees(name, department_id) VALUES ('Thomas', (SELECT id FROM departments WHERE name='sales'));
   `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
