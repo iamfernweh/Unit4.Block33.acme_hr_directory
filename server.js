@@ -117,12 +117,12 @@ const init = async () => {
   await client.query(SQL);
   console.log('tables created');
   SQL = `
-        INSERT INTO departments(name) VALUES ('engineering');
-        INSERT INTO departments(name) VALUES ('product');
+        INSERT INTO departments(name) VALUES ('eng');
+        INSERT INTO departments(name) VALUES ('prod');
         INSERT INTO departments(name) VALUES ('sales');
-        INSERT INTO (txt, department_id) VALUES ('Vans 1', (SELECT id FROM departments WHERE name='engineering'));
-        INSERT INTO (txt, department_id) VALUES ('Bob  2', (SELECT id FROM departments WHERE name='product'));
-        INSERT INTO (txt, department_id) VALUES ('Thomas 3', (SELECT id FROM departments WHERE name='sales'));
+        INSERT INTO employees(name, department_id) VALUES ('Vans', (SELECT id FROM departments WHERE name='eng'));
+        INSERT INTO employees(name, department_i) VALUES ('Bob', (SELECT id FROM departments WHERE name='prod'));
+        INSERT INTO employees(name, department_i) VALUES ('Thomas', (SELECT id FROM departments WHERE name='sales'));
   `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
