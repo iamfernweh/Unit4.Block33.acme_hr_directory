@@ -1,33 +1,18 @@
 const pg = require('pg');
 const express = require('express');
 const app = express();
-const morgan = require('morgan');
 
 const client = new pg.Client(
   process.env.DATABASE_URL || 'postgres://localhost/acme_hr_directory'
 );
 
 app.use(express.json());
-app.use(morgan('dev'));
 
 app.get('/api/employees', async (req, res, next) => {
   try {
     const SQL = `
         SELECT *
         FROM employees
-    `;
-    const response = await client.query(SQL);
-    res.send(response.rows);
-  } catch (er) {
-    next(er);
-  }
-});
-
-app.get('/api/departments', async (req, res, next) => {
-  try {
-    const SQL = `
-        SELECT *
-        FROM departments;
     `;
     const response = await client.query(SQL);
     res.send(response.rows);
@@ -73,12 +58,11 @@ app.put('/api/employees/:id', async (req, res, next) => {
     SET name = $1
     updated_at: now(),
     department_id = $2,
-    WHERE id = $3
+    WHERE id = $
     RETURNING *
     `;
     const response = await client.query(SQL, [
       req.body.txt,
-      req.body.ranking,
       req.body.department_id,
       req.params.id,
     ]);
