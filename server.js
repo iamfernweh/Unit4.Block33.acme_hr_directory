@@ -10,7 +10,7 @@ const client = new pg.Client(
 app.use(express.json());
 app.use(morgan('dev'));
 
-app.get('api/employees', async (req, res, next) => {
+app.get('/api/employees', async (req, res, next) => {
   try {
     const SQL = `
     SELECT *
@@ -23,7 +23,7 @@ app.get('api/employees', async (req, res, next) => {
   }
 });
 
-app.get('api/departments', async (req, res, next) => {
+app.get('/api/departments', async (req, res, next) => {
   try {
     const SQL = `
     SELECT *
@@ -66,7 +66,7 @@ app.delete('/api/employees/:id', async (req, res, next) => {
   }
 });
 
-app.put('api/employees/:id', async (req, res, next) => {
+app.put('/api/employees/:id', async (req, res, next) => {
   try {
     const SQL = `
     UPDATE employees
@@ -90,7 +90,7 @@ app.put('api/employees/:id', async (req, res, next) => {
 });
 
 //error handler
-app.use((err, req, next) => {
+app.use((err, req, res, next) => {
   res.status(err.status || 500).sent({ error: err.message || err });
 });
 
@@ -117,12 +117,12 @@ const init = async () => {
   await client.query(SQL);
   console.log('tables created');
   SQL = `
-        INSERT INTO departments(name) VALUES ('engineering')
-        INSERT INTO departments(name) VALUES ('product')
-        INSERT INTO departments(name) VALUES ('sales')
-        INSERT INTO (txt, department_id) VALUES ('Vans note 1', (SELECT id FROM departments WHERE name='engineering'));
-        INSERT INTO (txt, department_id) VALUES ('Bob note 2', (SELECT id FROM departments WHERE name='product'));
-        INSERT INTO (txt, department_id) VALUES ('Thomas note 3', (SELECT id FROM departments WHERE name='sales'));
+        INSERT INTO departments(name) VALUES ('engineering');
+        INSERT INTO departments(name) VALUES ('product');
+        INSERT INTO departments(name) VALUES ('sales');
+        INSERT INTO (txt, department_id) VALUES ('Vans 1', (SELECT id FROM departments WHERE name='engineering'));
+        INSERT INTO (txt, department_id) VALUES ('Bob  2', (SELECT id FROM departments WHERE name='product'));
+        INSERT INTO (txt, department_id) VALUES ('Thomas 3', (SELECT id FROM departments WHERE name='sales'));
   `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
@@ -131,6 +131,9 @@ const init = async () => {
     console.log(`curl localhost:${port}/api/employees`);
     console.log(`curl localhost:${port}/api/departments`);
     console.log(`curl -X DELETE localhost:${port}/api/employees/1`);
+    console.log(
+      `curl -X POST localhost:${port}/api/employees -d '{"txt": "another foo", "department_id": 1}' -H "Content-Type:application/json"`
+    );
   });
 };
 
