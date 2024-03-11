@@ -91,7 +91,7 @@ app.put('/api/employees/:id', async (req, res, next) => {
 
 //error handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500).sent({ error: err.message || err });
+  res.status(err.status || 500).send({ error: err.message || err });
 });
 
 const init = async () => {
@@ -105,7 +105,7 @@ const init = async () => {
         id SERIAL PRIMARY KEY,
         txt VARCHAR(100) NOT NULL
     );
-    CREATE TABLE employees (
+    CREATE TABLE employees(
         id SERIAL PRIMARY KEY,
         txt VARCHAR (100) NOT NULL,
         ranking INTEGER NOT NULL DEFAULT 5,
