@@ -39,12 +39,12 @@ app.get('/api/departments', async (req, res, next) => {
 app.post('/api/employees', async (req, res, next) => {
   try {
     const SQL = `
-    INSERT INTO employees(txt, department_id)
+    INSERT INTO employees(name, department_id)
     VALUES($1, $2)
     RETURNING *
     `;
     const response = await client.query(SQL, [
-      req.body.txt,
+      req.body.name,
       req.body.department_id,
     ]);
     res.send(201).send(response.rows[0]);
@@ -70,11 +70,10 @@ app.put('/api/employees/:id', async (req, res, next) => {
   try {
     const SQL = `
     UPDATE employees
-    SET txt = $1,
-    ranking = $2,
+    SET name = $1
     updated_at: now(),
-    department_id = $3,
-    WHERE id = $4
+    department_id = $2,
+    WHERE id = $3
     RETURNING *
     `;
     const response = await client.query(SQL, [
@@ -131,7 +130,7 @@ const init = async () => {
     console.log(`curl localhost:${port}/api/departments`);
     console.log(`curl localhost:${port}/api/employees/1 -X DELETE`);
     console.log(
-      `curl -X POST localhost:${port}/api/employees -d '{"txt": "another foo", "department_id": 1}' -H "Content-Type:application/json"`
+      `curl -X POST localhost:${port}/api/employees -d '{"name": "another foo", "department_id": 1}' -H "Content-Type:application/json"`
     );
   });
 };
