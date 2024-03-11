@@ -103,15 +103,15 @@ const init = async () => {
     DROP TABLE IF EXISTS departments;
     CREATE TABLE departments(
         id SERIAL PRIMARY KEY,
-        txt VARCHAR(100) NOT NULL
+        name VARCHAR(100)
     );
     CREATE TABLE employees(
         id SERIAL PRIMARY KEY,
-        txt VARCHAR (100) NOT NULL,
+        name VARCHAR (100),
         ranking INTEGER NOT NULL DEFAULT 5,
         created_at TIMESTAMP DEFAULT now(),
         updated_at TIMESTAMP DEFAULT now(),
-        department_id INTEGER REFERENCES employees(id) NOT NULL
+        department_id INTEGER REFERENCES departments(id) NOT NULL
     );
   `;
   await client.query(SQL);
