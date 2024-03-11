@@ -13,8 +13,8 @@ app.use(morgan('dev'));
 app.get('/api/employees', async (req, res, next) => {
   try {
     const SQL = `
-    SELECT *
-    FROM employees;
+        SELECT *
+        FROM employees
     `;
     const response = await client.query(SQL);
     res.send(response.rows);
@@ -26,8 +26,8 @@ app.get('/api/employees', async (req, res, next) => {
 app.get('/api/departments', async (req, res, next) => {
   try {
     const SQL = `
-    SELECT *
-    FROM departments;
+        SELECT *
+        FROM departments;
     `;
     const response = await client.query(SQL);
     res.send(response.rows);
@@ -56,8 +56,8 @@ app.post('/api/employees', async (req, res, next) => {
 app.delete('/api/employees/:id', async (req, res, next) => {
   try {
     const SQL = `
-    DELETE FROM employees
-    WHERE id = $1;
+        DELETE FROM employees
+        WHERE id = $1;
     `;
     await client.query(SQL, [req.params.id]);
     res.sendStatus(204);
@@ -129,7 +129,7 @@ const init = async () => {
     console.log(`listening on port ${port}`);
     console.log(`curl localhost:${port}/api/employees`);
     console.log(`curl localhost:${port}/api/departments`);
-    console.log(`curl -X DELETE localhost:${port}/api/employees/1`);
+    console.log(`curl localhost:${port}/api/employees/1 -X DELETE`);
     console.log(
       `curl -X POST localhost:${port}/api/employees -d '{"txt": "another foo", "department_id": 1}' -H "Content-Type:application/json"`
     );
