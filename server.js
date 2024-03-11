@@ -9,6 +9,16 @@ const client = new pg.Client(
 
 const init = async () => {
   console.log('connecting to db');
+  await client.connect();
+  console.log('connected to db');
+  let SQL = `
+  `;
+  await client.query(SQL);
+  console.log('data seeded');
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.log(`listening on port ${port}`);
+  });
 };
 
 init();
