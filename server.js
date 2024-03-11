@@ -7,6 +7,88 @@ const client = new pg.Client(
   process.env.DATABASE_URL || 'postgres://localhost/acme_hr_directory'
 );
 
+app.use(express.json());
+app.use(morgan('dev'));
+
+app.get('api/employees', async (req, res, next) => {
+  try {
+    const SQL = `
+    SELECT *
+    FROM employees;
+    `;
+    const response = await client.query(SQL);
+    res.send(response.rows);
+  } catch (er) {
+    next(er);
+  }
+});
+
+app.get('api/departments', async (req, res, next) => {
+  try {
+    const SQL = `
+    SELECT *
+    FROM employees;
+    `;
+    const response = await client.query(SQL);
+    res.send(response.rows);
+  } catch (er) {
+    next(er);
+  }
+});
+
+app.post('/api/employees', async (req, res, next) => {
+  try {
+    const SQL = `
+    INSERT INTO employees(txt, department_id)
+    VALUES($1, $2)
+    RETURNING *
+    `;
+    const response = await client.query(SQL, [
+      req.body.txt,
+      req.body.department_id,
+    ]);
+    res.send(201).send(response.rows[0]);
+  } catch (er) {
+    next(er);
+  }
+});
+
+app.delete('/api/employees/:id', async (req, res, next) => {
+  try {
+    const SQL = `
+    DELETE FROM employees
+    WHERE id = $1;
+    `;
+    await client.query(SQL, [req.params.id]);
+    res.sendStatus(204);
+  } catch (er) {
+    next(er);
+  }
+});
+
+app.put('api/employees/:id', async (req, res, next) => {
+  try {
+    const SQL = `
+    UPDATE employees
+    SET txt = $1,
+    ranking = $2,
+    updated_at: now(),
+    department_id = $3,
+    WHERE id = $4
+    RETURNING *
+    `;
+    const response = await client.query(SQL, [
+      req.body.txt,
+      req.body.ranking,
+      req.body.department_id,
+      req.params.id,
+    ]);
+    res.send(response.rows[0]);
+  } catch (er) {
+    next(er);
+  }
+});
+
 const init = async () => {
   console.log('connecting to db');
   await client.connect();
@@ -21,6 +103,7 @@ const init = async () => {
     CREATE TABLE employees (
         id SERIAL PRIMARY KEY,
         txt VARCHAR (100) NOT NULL,
+        ranking INTEGER NOT NULL DEFAULT 5,
         created_at TIMESTAMP DEFAULT now(),
         updated_at TIMESTAMP DEFAULT now(),
         department_id INTEGER REFERENCES employees(id) NOT NULL
@@ -29,7 +112,12 @@ const init = async () => {
   await client.query(SQL);
   console.log('tables created');
   SQL = `
-        INSERT INTO 
+        INSERT INTO departments(name) VALUES ('engineering')
+        INSERT INTO departments(name) VALUES ('product')
+        INSERT INTO departments(name) VALUES ('sales')
+        INSERT INTO (txt, department_id) VALUES ('Vans Engineer 1', (SELECT id FROM departments WHERE name='engineering'));
+        INSERT INTO (txt, department_id) VALUES ('Bob Product 2', (SELECT id FROM departments WHERE name='product'));
+        INSERT INTO (txt, department_id) VALUES ('Thomas sales 3', (SELECT id FROM departments WHERE name='sales'));
   `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
