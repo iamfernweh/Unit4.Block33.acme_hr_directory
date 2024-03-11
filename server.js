@@ -16,17 +16,21 @@ const init = async () => {
     DROP TABLE IF EXISTS departments;
     CREATE TABLE departments(
         id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL
+        txt VARCHAR(100) NOT NULL
     );
     CREATE TABLE employees (
         id SERIAL PRIMARY KEY,
-        name VARCHAR (100) NOT NULL,
+        txt VARCHAR (100) NOT NULL,
         created_at TIMESTAMP DEFAULT now(),
         updated_at TIMESTAMP DEFAULT now(),
         department_id INTEGER REFERENCES employees(id) NOT NULL
     );
   `;
   await client.query(SQL);
+  console.log('tables created');
+  SQL = `
+        INSERT INTO 
+  `;
   console.log('data seeded');
   const port = process.env.PORT || 3001;
   app.listen(port, () => {
