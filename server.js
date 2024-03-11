@@ -27,7 +27,7 @@ app.get('/api/departments', async (req, res, next) => {
   try {
     const SQL = `
     SELECT *
-    FROM employees;
+    FROM departments;
     `;
     const response = await client.query(SQL);
     res.send(response.rows);
