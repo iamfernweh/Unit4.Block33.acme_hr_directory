@@ -89,6 +89,11 @@ app.put('api/employees/:id', async (req, res, next) => {
   }
 });
 
+//error handler
+app.use((err, req, next) => {
+  res.status(err.status || 500).sent({ error: err.message || err });
+});
+
 const init = async () => {
   console.log('connecting to db');
   await client.connect();
@@ -123,6 +128,9 @@ const init = async () => {
   const port = process.env.PORT || 3001;
   app.listen(port, () => {
     console.log(`listening on port ${port}`);
+    console.log(`curl localhost:${port}/api/employees`);
+    console.log(`curl localhost:${port}/api/departments`);
+    console.log(`curl -X DELETE localhost:${port}/api/employees/1`);
   });
 };
 
